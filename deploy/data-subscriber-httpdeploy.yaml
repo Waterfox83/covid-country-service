@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: covid-country-service-deployment
+spec:
+  selector:
+    matchLabels:
+      app: covid-country-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: covid-country-service
+    spec:
+      containers:
+        - name: covid-country-service
+          image: waterfox83/covid-country-service:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+---
+# The service (LoadBalancer type) which can be used to access the above running container.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: covid-country-service-svc
+  labels:
+    app: covid-country-service
+spec:
+  loadBalancerIP: 34.67.243.147 #staticIP
+  type: LoadBalancer
+  selector:
+    app: covid-country-service
+  ports:
+    - nodePort: 30004
+      port: 8080
+      name: http-countryport
+      targetPort: 8080
