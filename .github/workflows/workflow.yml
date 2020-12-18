@@ -1,4 +1,6 @@
-name: new-worklfow
+name: new-workflow
+env:
+  IMAGE_REPOSITORY: waterfox83/covid-country-service
 on:
   push:
     branches:
@@ -24,3 +26,21 @@ jobs:
       # Run unit tests.
       - name: Run unit tests
         run: ./gradlew test
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      # Check out source code.
+      - name: Check out source code
+        uses: actions/checkout@v2
+      # Build the jar
+      - name: Build
+        run: ./gradlew clean build
+      # Build and push container image.
+      - name: Build and push container image
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: ${{ env.IMAGE_REPOSITORY }}
+          dockerfile: Dockerfile
+          tag_with_ref: true
