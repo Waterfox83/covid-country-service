@@ -18,7 +18,7 @@ docker load --input build/jib-image.tar
 
 echo " ++++++++++++ Logging into ACR  ++++++++++++ "
 
-docker login -u waterfox83 -p Abhishek123*
+docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
 
 echo " ++++++++++++ Pushing new docker image to ACR  ++++++++++++ "
 
