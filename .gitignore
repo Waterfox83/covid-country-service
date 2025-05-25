@@ -30,3 +30,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Local environment variables
+.env
+.env.*
+local.properties
